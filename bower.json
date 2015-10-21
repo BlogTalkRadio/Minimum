@@ -1,0 +1,29 @@
+{
+  "name": "Minimum",
+  "version": "0.0.1",
+  "homepage": "https://github.com/BlogTalkRadio/Minimum",
+  "authors": [
+    "BlogTalkRadio"
+  ],
+  "description": "A lightweight yet powerful replacement for jQuery with support for DI and modules",
+  "main": "minimum.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "minimum",
+    "mm",
+    "di",
+    "modules",
+    "jquery",
+    "replacement"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
