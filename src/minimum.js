@@ -31,7 +31,7 @@
             el.style.display = '';
         };
 
-        this.noop = function () { };
+        this.noop = function () {};
 
         this.byId = function (id) {
             return document.getElementById(id);
