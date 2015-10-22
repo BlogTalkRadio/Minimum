@@ -83,15 +83,15 @@
 
         // serializes an object as a query string to be sent via a form
         // we're using the same name as jquery uses
-        this.serialize = function(instance, prefix) {
+        this.serialize = function (instance, prefix) {
             var serialized = [];
 
             prefix = prefix ? prefix + '.' : '';
-            
+
             for (var key in instance) {
                 if (instance.hasOwnProperty(key)) {
                     var value = instance[key];
-                    
+
                     if (!value) {
                         serialized.push(prefix + key + '=');
                     }
@@ -115,7 +115,7 @@
             return serialized.join('&');
         };
 
-        this.ajax = function(method, url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
+        this.ajax = function (method, url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
             var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
             request.open(method, url, true);
             if (isJSON) {
@@ -125,7 +125,7 @@
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             }
 
-            request.onreadystatechange = function() {
+            request.onreadystatechange = function () {
                 if (this.readyState === 4) {
 
                     var responseContentType = this.getResponseHeader('content-type');
@@ -380,31 +380,31 @@
             return this.getQueryStringValues(url, true);
         };
 
-		
-		/**
+
+        /**
 		 * Fast UUID generator, RFC4122 version 4 compliant.
 		 * @author Jeff Ward (jcward.com).
 		 * @license MIT license
 		 * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
 		 **/
-		var UUID = (function() {
-		  var self = {};
-		  var lut = []; for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
-		  self.generate = function() {
-			var d0 = Math.random()*0xffffffff|0;
-			var d1 = Math.random()*0xffffffff|0;
-			var d2 = Math.random()*0xffffffff|0;
-			var d3 = Math.random()*0xffffffff|0;
-			return lut[d0&0xff]+lut[d0>>8&0xff]+lut[d0>>16&0xff]+lut[d0>>24&0xff]+'-'+
-			  lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
-			  lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
-			  lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
-		  }
-		  return self;
-		})();
-		
-		this.guid = UUID.generate;
-		
+        var UUID = (function () {
+            var self = {};
+            var lut = []; for (var i = 0; i < 256; i++) { lut[i] = (i < 16 ? '0' : '') + (i).toString(16); }
+            self.generate = function () {
+                var d0 = Math.random() * 0xffffffff | 0;
+                var d1 = Math.random() * 0xffffffff | 0;
+                var d2 = Math.random() * 0xffffffff | 0;
+                var d3 = Math.random() * 0xffffffff | 0;
+                return lut[d0 & 0xff] + lut[d0 >> 8 & 0xff] + lut[d0 >> 16 & 0xff] + lut[d0 >> 24 & 0xff] + '-' +
+                  lut[d1 & 0xff] + lut[d1 >> 8 & 0xff] + '-' + lut[d1 >> 16 & 0x0f | 0x40] + lut[d1 >> 24 & 0xff] + '-' +
+                  lut[d2 & 0x3f | 0x80] + lut[d2 >> 8 & 0xff] + '-' + lut[d2 >> 16 & 0xff] + lut[d2 >> 24 & 0xff] +
+                  lut[d3 & 0xff] + lut[d3 >> 8 & 0xff] + lut[d3 >> 16 & 0xff] + lut[d3 >> 24 & 0xff];
+            }
+            return self;
+        })();
+
+        this.guid = UUID.generate;
+
         /**
          * Checks if `value` is classified as a `Function` object.
          *
