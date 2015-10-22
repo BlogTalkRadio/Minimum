@@ -444,7 +444,7 @@
 
         //similar to $.Callbacks
         //methods that supports: add, fire, remove and empty
-        this.Callbacks = function (nameOfTheCallbacks) {
+        this.callbacks = function (nameOfTheCallbacks) {
             return new Callbacks(nameOfTheCallbacks);
         };
 
