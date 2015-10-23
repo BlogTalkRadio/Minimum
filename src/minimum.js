@@ -442,10 +442,10 @@
             return results;
         };
 
-        //similar to $.Callbacks
+        //similar to $.callbacks
         //methods that supports: add, fire, remove and empty
-        this.callbacks = function (nameOfTheCallbacks) {
-            return new Callbacks(nameOfTheCallbacks);
+        this.callbacks = function (nameOfTheCallbacks, bubbleUpErrors) {
+            return new Callbacks(nameOfTheCallbacks, bubbleUpErrors);
         };
 
         this.resolve = function (deps, func, scope) {
@@ -501,11 +501,13 @@
 
     //OTHER PRIVATE OBJECTS
     //Callbacks
-    function Callbacks(name) {
+    function Callbacks(name, bubbleErrors) {
 
-        var callbackName = name,
-            autoFire = false,
+        var autoFire = false,
+            lastCaller,
+            lastArguments,
             listOfCallbacks = [];
+        bubbleErrors = (bubbleErrors) ? true : false; 
 
         this.add = function () {
             for (var i = 0; i < arguments.length; i++) {
@@ -513,7 +515,7 @@
                 if (fn && mm.isFunction(fn)) {
                     listOfCallbacks.push(fn);
                     if (autoFire) {
-                        fireToFn(fn);
+                        fireToFn(lastCaller,fn, lastArguments);
                     }
                 }
             }
@@ -524,10 +526,18 @@
             return true;
         };
 
-        this.fire = function () {
-            var args = arguments;
+        this.fire = function() {
+            var args = arguments,
+                context = this;
+            if(arguments.length > 0 && mm.isObject(args[0])){
+                context = Array.prototype.splice.call(args, 0, 1)[0];
+            }
             for (var i = 0; i < listOfCallbacks.length; i++) {
-                fireToFn(listOfCallbacks[i], args);
+                fireToFn(context, listOfCallbacks[i], args);
+                if(autoFire){
+                    lastCaller = context;
+                    lastArguments = args;
+                }
             }
         };
 
@@ -545,13 +555,19 @@
             autoFire = enable;
         };
 
-        function fireToFn(callback, args) {
+        function fireToFn(context, callback, args) {
             try {
                 args = (args) ? args : []; //ie8 bug
-                callback.apply(null, args);
-            } catch (err) {
-                if (console && console.log) {
-                    console.log('a function thrown an error on Callbacks named: ' + callbackName + ' the error was: ' + err);
+                callback.apply(context, args);
+            } 
+            catch (err) {
+                if (!bubbleErrors && console && console.error) {
+                    console.error('a function thrown an error on Callbacks named: ' + name + ' the error was: ' + err);
+                    if(err.stack){
+                        console.error(err.stack);
+                    }
+                } else if(bubbleErrors) {
+                    throw err;
                 }
             }
         }
@@ -613,10 +629,7 @@
             if (!func && !mm.isFunction(func)) {
                 throw 'the second parameter of an app cannot be null and must be an function';
             }
-            app = {};
-            app.deps = deps;
-            app.func = func;
-            app.scope = scope;
+            app = {deps: deps, func: func, scope: scope};
         };
 
         mm.onReady(function () {
