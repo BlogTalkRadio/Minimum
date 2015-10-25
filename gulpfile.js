@@ -1,9 +1,14 @@
 ﻿'use strict';
-var gulp = require('gulp'),
+var distFolder = 'dist',
+    appNameJs = 'minimum.js',
+    gulp = require('gulp'),
+    rename = require('gulp-rename'),
     jshint = require('gulp-jshint'),
     lintReporter = require('jshint-stylish'),
     notify = require('gulp-notify'),
     Server = require('karma').Server,
+    uglyfly = require('gulp-uglyfly'),
+    concat = require('gulp-concat-util'),
     sourceFiles = ['src/minimum.js','src/**/*.js'], //minimum always first
     testFiles = ['tests/**/*.js'];
     
@@ -35,6 +40,19 @@ gulp.task('tdd', function (done) {
   }, done).start();
 });
 
+gulp.task('concat:dist', function() {
+  return gulp.src(sourceFiles)
+    .pipe(concat(appNameJs, {process: function(src) { return (src.trim() + '\n').replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1'); }}))
+    .pipe(concat.header('\'use strict\';\n'))
+    .pipe(gulp.dest(distFolder));
+});
+
+gulp.task('uglyfly', ['concat:dist'], function(){
+    return gulp.src(distFolder + '/' + appNameJs)
+        .pipe(uglyfly())
+        .pipe(rename({extname:'.min.js'}))
+        .pipe(gulp.dest(distFolder));
+});
 
 //Main tasks
 gulp.task('watch', function(){
@@ -44,6 +62,7 @@ gulp.task('watch', function(){
   		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});	
 });
+
 gulp.task('watchtdd', function(){
     var listToWatch = sourceFiles.concat(testFiles); 
     var watcher = gulp.watch(listToWatch, ['lint', 'tdd']);
@@ -54,4 +73,4 @@ gulp.task('watchtdd', function(){
 
 gulp.task('default', ['lint', 'test']);
 gulp.task('build:Debug', ['default']);
-gulp.task('build:Release', ['default']);
+gulp.task('build:Release', ['default', 'uglyfly']);

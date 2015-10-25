@@ -1,7 +1,7 @@
 /*jslint bitwise: true*/
 'use strict';
 (function(mm){
-	 /**
+	/**
     * Fast UUID generator, RFC4122 version 4 compliant.
     * @author Jeff Ward (jcward.com).
     * @license MIT license
@@ -24,7 +24,7 @@
         return self;
     })(); // end UUID
 
-    mm.this.guid = function() {
+    mm.guid = function() {
         return UUID.generate();
     };
     

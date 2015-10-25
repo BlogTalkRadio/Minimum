@@ -11,7 +11,6 @@
 		this._lastArguments = null;
 	}
 
-
     Callbacks.prototype.empty = function () {
         this._listOfCallbacks = [];
         return true;
@@ -38,6 +37,11 @@
         }
     };
 
+    // .fire() will fire the event binding to this
+    // .fire(object) will fire event bindning to the first parameter object
+    // .fire(object, parm1, param2... etc) will fire the event binding it to the first objcect, and the 
+    // following parameters will be pass to the subscribed functions 
+    // fire(null, param1, param2.. etce)  will fire the event binding it to, the rest of the params will be passed
     Callbacks.prototype.fire = function() {
         var args = arguments,
             context = this;
@@ -73,7 +77,7 @@
                     console.error(err.stack);
                 }
                 else{
-                	console.error('a function attached to Callbacks thow an error: '+ err);
+                	console.error('a function attached to Callbacks thorwed an error: '+ err);
                 }
             } else if(this._bubbleErrors) {
                 throw err;
@@ -89,6 +93,5 @@
         callbacks.enableBubbleUpErrors(bubbleUpErrors);
         return callbacks;
     };
-
 
 })(window.mm);
