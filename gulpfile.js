@@ -4,7 +4,7 @@ var gulp = require('gulp'),
     lintReporter = require('jshint-stylish'),
     notify = require('gulp-notify'),
     Server = require('karma').Server,
-    sourceFiles = ['src/**/*.js'],
+    sourceFiles = ['src/minimum.js','src/**/*.js'], //minimum always first
     testFiles = ['tests/**/*.js'];
     
 gulp.task('lint', function() {

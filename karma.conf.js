@@ -1,6 +1,6 @@
 // Karma configuration
 // Generated on Thu Oct 22 2015 00:07:04 GMT-0300 (Argentina Standard Time)
-
+'use strict';
 module.exports = function(config) {
   config.set({
 
@@ -15,6 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'src/minimum.js',
       'src/**/*.js',
       'tests/**/*.js'
     ],

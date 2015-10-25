@@ -6,6 +6,17 @@
 'use strict';
 (function () {
 
+    //Object.create Poliflly 
+    if (typeof Object.create !== 'function') {
+        Object.create = (function () {
+        function F() {}
+        return function (o) {
+                F.prototype = o;
+                return new F();
+            };
+        })();
+    }
+
     var mm = new Minimum(); //a Minimum to use on self;
     window.mm = mm;
 
@@ -369,7 +380,12 @@
         };
 
         this.pushArray = function (array1, array2) {
-            array1.push.apply(array1, array2);
+            if(array1.concat){
+                array1.concat(array2);
+            }
+            else{
+                array1.push.apply(array1, array2);
+            }
         };
 
         this.isArray = function isArray(obj) {
@@ -442,11 +458,7 @@
             return results;
         };
 
-        //similar to $.callbacks
-        //methods that supports: add, fire, remove and empty
-        this.callbacks = function (nameOfTheCallbacks, bubbleUpErrors) {
-            return new Callbacks(nameOfTheCallbacks, bubbleUpErrors);
-        };
+        
 
         this.resolve = function (deps, func, scope) {
             diContainer = diContainer || new Injector();
@@ -500,80 +512,6 @@
     } //end Minimum
 
     //OTHER PRIVATE OBJECTS
-    //Callbacks
-    function Callbacks(name, bubbleErrors) {
-
-        var autoFire = false,
-            lastCaller,
-            lastArguments,
-            listOfCallbacks = [];
-        bubbleErrors = (bubbleErrors) ? true : false; 
-
-        this.add = function () {
-            for (var i = 0; i < arguments.length; i++) {
-                var fn = arguments[i];
-                if (fn && mm.isFunction(fn)) {
-                    listOfCallbacks.push(fn);
-                    if (autoFire) {
-                        fireToFn(lastCaller,fn, lastArguments);
-                    }
-                }
-            }
-        };
-
-        this.empty = function () {
-            listOfCallbacks = [];
-            return true;
-        };
-
-        this.fire = function() {
-            var args = arguments,
-                context = this;
-            if(arguments.length > 0 && mm.isObject(args[0])){
-                context = Array.prototype.splice.call(args, 0, 1)[0];
-            }
-            for (var i = 0; i < listOfCallbacks.length; i++) {
-                fireToFn(context, listOfCallbacks[i], args);
-                if(autoFire){
-                    lastCaller = context;
-                    lastArguments = args;
-                }
-            }
-        };
-
-        this.remove = function (fn) {
-            var index = mm.inArray(listOfCallbacks, fn);
-            if (mm.isFunction(fn) && index >= 0) {
-                listOfCallbacks.splice(index, 1);
-                return true;
-            }
-            return false;
-        };
-
-        //this is when this event is executed only one time. And perhaps some handlers where attached after the event was release
-        this.setAutoFireOnNewAdds = function (enable) {
-            autoFire = enable;
-        };
-
-        function fireToFn(context, callback, args) {
-            try {
-                args = (args) ? args : []; //ie8 bug
-                callback.apply(context, args);
-            } 
-            catch (err) {
-                if (!bubbleErrors && console && console.error) {
-                    console.error('a function thrown an error on Callbacks named: ' + name + ' the error was: ' + err);
-                    if(err.stack){
-                        console.error(err.stack);
-                    }
-                } else if(bubbleErrors) {
-                    throw err;
-                }
-            }
-        }
-
-    } //end Callbacks
-
     ///Injector
     function Injector() {
         var app, self = this,
