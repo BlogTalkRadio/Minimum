@@ -93,7 +93,21 @@ describe('Callbacks: ', function() {
 		expect(listener.onSomething).not.toHaveBeenCalled();
 	});
 
-	it('a listener attached method to Callbacks, should not bubble up errors by default', function(){
+	it('a listener attached method to Callbacks, should bubble up errors by default', function(){
+		spyOn(listener, 'onSomething').and.callThrough();
+		spyOn(listener, 'onSomeError').and.callThrough();
+
+		callback1.add(listener.onSomeError);
+		callback1.add(listener.onSomething); 
+		
+		expect(caller.fireAnon).toThrowError();
+		expect(listener.onSomeError).toHaveBeenCalled();
+		expect(listener.onSomething).not.toHaveBeenCalled();	
+	});
+
+	it('a listener attached method to Callbacks, should bubble up errors when setuped', function(){
+		callback1 = mm.callbacks(false); //new callbacks configured not to bubbule up Errors
+
 		spyOn(listener, 'onSomething').and.callThrough();
 		spyOn(listener, 'onSomeError').and.callThrough();
 		spyOn(console, 'error');
@@ -107,17 +121,5 @@ describe('Callbacks: ', function() {
 		expect(listener.onSomeError).toHaveBeenCalled();	
 	});
 
-	it('a listener attached method to Callbacks, should bubble up errors hen setuped', function(){
-		callback1 = mm.callbacks(true); //new callbacks configured to bubbule up Errors
-		
-		spyOn(listener, 'onSomething').and.callThrough();
-		spyOn(listener, 'onSomeError').and.callThrough();
-
-		callback1.add(listener.onSomeError);
-		callback1.add(listener.onSomething); 
-		
-		expect(caller.fireAnon).toThrowError();
-		expect(listener.onSomeError).toHaveBeenCalled();
-		expect(listener.onSomething).not.toHaveBeenCalled();	
-	});
+	
 });

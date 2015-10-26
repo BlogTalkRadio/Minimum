@@ -83,7 +83,7 @@
 
 	mm.onReady = function (fn) {
 		if (!onDocumentReadyEvent) {
-		    onDocumentReadyEvent = this.callbacks(true); // bubble up an error if the statring code generates an error
+		    onDocumentReadyEvent = this.callbacks(); // bubble up an error if the statring code generates an error
 		    onDocumentReadyEvent.add(fn);
 		    setOnDocumentReady();
 		} else {

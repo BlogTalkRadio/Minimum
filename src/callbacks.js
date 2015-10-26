@@ -6,7 +6,7 @@
     	//And perhaps some handlers where attached after the event was release
 		this._autoFire = false;
 		this._listOfCallbacks = [];
-		this._bubbleErrors = false;
+		this._bubbleErrors = true; //by default callbacks bubble's up errors
 		this._lastCaller = null;
 		this._lastArguments = null;
 	}
@@ -17,13 +17,14 @@
     };
 
     Callbacks.prototype.enableBubbleUpErrors = function(bool){
-    	this._bubbleErrors = (bool) ? true : false;
+    	this._bubbleErrors = (bool === false) ? false : true; //by default true. Callbacks bubbles up errors
     };
 
     Callbacks.prototype.setAutoFireOnNewAdds = function(bool){
     	this._autoFire = bool;
     };
-    
+
+    //add function/s to listen the event
     Callbacks.prototype.add = function () {
         for (var i = 0; i < arguments.length; i++) {
             var fn = arguments[i];
@@ -37,7 +38,7 @@
         }
     };
 
-    // .fire() will fire the event binding to this
+    // .fire() will fire the event binding to this(to this callback)
     // .fire(object) will fire event bindning to the first parameter object
     // .fire(object, parm1, param2... etc) will fire the event binding it to the first objcect, and the 
     // following parameters will be pass to the subscribed functions 
@@ -88,6 +89,7 @@
 
 	//similar to $.callbacks
     //methods that supports: add, fire, remove and empty
+    //mm.callbacks(false); does not buuble ups errors
     mm.callbacks = function (bubbleUpErrors) {
         var callbacks = new Callbacks();
         callbacks.enableBubbleUpErrors(bubbleUpErrors);
