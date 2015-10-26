@@ -104,8 +104,7 @@ describe('Callbacks: ', function() {
 		caller.fireAnon();
 		expect(console.error).toHaveBeenCalled();
 		expect(listener.onSomething).toHaveBeenCalled();
-		expect(listener.onSomeError).toHaveBeenCalled();
-		
+		expect(listener.onSomeError).toHaveBeenCalled();	
 	});
 
 	it('a listener attached method to Callbacks, should bubble up errors hen setuped', function(){
@@ -119,7 +118,6 @@ describe('Callbacks: ', function() {
 		
 		expect(caller.fireAnon).toThrowError();
 		expect(listener.onSomeError).toHaveBeenCalled();
-		expect(listener.onSomething).not.toHaveBeenCalled();
-		
+		expect(listener.onSomething).not.toHaveBeenCalled();	
 	});
 });

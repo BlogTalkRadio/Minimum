@@ -9,7 +9,7 @@ var distFolder = 'dist',
     Server = require('karma').Server,
     uglyfly = require('gulp-uglyfly'),
     concat = require('gulp-concat-util'),
-    sourceFiles = ['src/minimum.js','src/**/*.js'], //minimum always first
+    sourceFiles = ['src/minimum.js', 'src/callbacks.js','src/**/*.js'], //minimum always first and second callbacks because of the onReadyEvent
     testFiles = ['tests/**/*.js'];
     
 gulp.task('lint', function() {

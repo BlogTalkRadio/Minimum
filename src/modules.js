@@ -69,9 +69,13 @@
 
     } //end injector
 
+    //mm.resolve:  resolves the dependencies in the moment
+    //deps can be a string or an array
     mm.resolve = function (deps, func, scope) {
         diContainer = diContainer || new Injector();
-        diContainer.resolve(deps, func, scope);
+        deps = (mm.isString(deps)) ? [deps] : deps;
+        var resolved = diContainer.resolve(deps, func, scope);
+        resolved.apply(scope || {});
     };
 
     mm.app = function (deps, func, scope) {

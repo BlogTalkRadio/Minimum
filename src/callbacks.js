@@ -20,10 +20,10 @@
     	this._bubbleErrors = (bool) ? true : false;
     };
 
-    Callbacks.prototype.enableAutoFire = function(bool){
+    Callbacks.prototype.setAutoFireOnNewAdds = function(bool){
     	this._autoFire = bool;
     };
-
+    
     Callbacks.prototype.add = function () {
         for (var i = 0; i < arguments.length; i++) {
             var fn = arguments[i];
