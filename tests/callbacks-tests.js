@@ -26,7 +26,7 @@ describe('Callbacks: ', function() {
 		};
 
 	beforeEach(function() {
-    	callback1 = mm.callbacks();
+		callback1 = mm.callbacks();
   	});
 
 	afterEach(function() {

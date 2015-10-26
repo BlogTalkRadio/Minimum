@@ -25,5 +25,8 @@
     "bower_components",
     "test",
     "tests"
+  ],
+  "main": [
+    "dist/minimum.js"
   ]
 }
