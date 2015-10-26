@@ -1,5 +1,5 @@
 'use strict';
-(function(mm){
+(function(mm) {
 
     var diContainer = null;
     ///Injector
@@ -7,9 +7,9 @@
         var app, self = this,
             modules = {};
 
-        this.resolve = function (deps, func, scope) {
+        this.resolve = function(deps, func, scope) {
             if (!deps || deps.length <= 0) {
-                return function () {
+                return function() {
                     return func.apply(scope || {});
                 };
             }
@@ -24,7 +24,7 @@
                 }
             }
 
-            return function () {
+            return function() {
                 var args = [];
                 for (var i = 0; i < deps.length; i++) {
                     args.push(modules[deps[i]].result);
@@ -33,7 +33,7 @@
             };
         };
 
-        this.module = function (name, deps, func, scope) {
+        this.module = function(name, deps, func, scope) {
             if (mm.isFunction(deps)) {
                 func = deps;
                 deps = null;
@@ -50,17 +50,21 @@
             }; //name prop is for easy debug 
         };
 
-        this.app = function (deps, func, scope) {
+        this.app = function(deps, func, scope) {
             if (!deps && !mm.isArray(deps)) {
                 throw 'the dependiencies of an app cannot be null and must be an array';
             }
             if (!func && !mm.isFunction(func)) {
                 throw 'the second parameter of an app cannot be null and must be an function';
             }
-            app = {deps: deps, func: func, scope: scope};
+            app = {
+                deps: deps,
+                func: func,
+                scope: scope
+            };
         };
 
-        mm.onReady(function () {
+        mm.onReady(function() {
             if (app) {
                 var mmApp = self.resolve(app.deps, app.func, app.scope);
                 mmApp();
@@ -71,19 +75,19 @@
 
     //mm.resolve:  resolves the dependencies in the moment
     //deps can be a string or an array
-    mm.resolve = function (deps, func, scope) {
+    mm.resolve = function(deps, func, scope) {
         diContainer = diContainer || new Injector();
         deps = (mm.isString(deps)) ? [deps] : deps;
         var resolved = diContainer.resolve(deps, func, scope);
         resolved.apply(scope || {});
     };
 
-    mm.app = function (deps, func, scope) {
+    mm.app = function(deps, func, scope) {
         diContainer = diContainer || new Injector();
         diContainer.app(deps, func, scope);
     };
 
-    mm.module = function (name, deps, func, scope) {
+    mm.module = function(name, deps, func, scope) {
         diContainer = diContainer || new Injector();
         diContainer.module(name, deps, func, scope);
     };

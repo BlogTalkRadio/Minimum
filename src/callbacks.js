@@ -1,37 +1,37 @@
 'use strict';
-(function (mm) {
-	
-	function Callbacks(){
-		//_autoFire is when this event is executed only one time. 
-    	//And perhaps some handlers where attached after the event was release
-		this._autoFire = false;
-		this._listOfCallbacks = [];
-		this._bubbleErrors = true; //by default callbacks bubble's up errors
-		this._lastCaller = null;
-		this._lastArguments = null;
-	}
+(function(mm) {
 
-    Callbacks.prototype.empty = function () {
+    function Callbacks() {
+        //_autoFire is when this event is executed only one time. 
+        //And perhaps some handlers where attached after the event was release
+        this._autoFire = false;
+        this._listOfCallbacks = [];
+        this._bubbleErrors = true; //by default callbacks bubble's up errors
+        this._lastCaller = null;
+        this._lastArguments = null;
+    }
+
+    Callbacks.prototype.empty = function() {
         this._listOfCallbacks = [];
         return true;
     };
 
-    Callbacks.prototype.enableBubbleUpErrors = function(bool){
-    	this._bubbleErrors = (bool === false) ? false : true; //by default true. Callbacks bubbles up errors
+    Callbacks.prototype.enableBubbleUpErrors = function(bool) {
+        this._bubbleErrors = (bool === false) ? false : true; //by default true. Callbacks bubbles up errors
     };
 
-    Callbacks.prototype.setAutoFireOnNewAdds = function(bool){
-    	this._autoFire = bool;
+    Callbacks.prototype.setAutoFireOnNewAdds = function(bool) {
+        this._autoFire = bool;
     };
 
     //add function/s to listen the event
-    Callbacks.prototype.add = function () {
+    Callbacks.prototype.add = function() {
         for (var i = 0; i < arguments.length; i++) {
             var fn = arguments[i];
             if (fn && mm.isFunction(fn)) {
                 this._listOfCallbacks.push(fn);
                 if (this._autoFire) {
-                    this._fireToEventHandler(this._lastCaller, fn, 
+                    this._fireToEventHandler(this._lastCaller, fn,
                         this._lastArguments);
                 }
             }
@@ -46,19 +46,19 @@
     Callbacks.prototype.fire = function() {
         var args = arguments,
             context = this;
-        if(arguments.length > 0 && mm.isObject(args[0])){
+        if (arguments.length > 0 && mm.isObject(args[0])) {
             context = Array.prototype.splice.call(args, 0, 1)[0];
         }
         for (var i = 0; i < this._listOfCallbacks.length; i++) {
             this._fireToEventHandler(context, this._listOfCallbacks[i], args);
-            if(this._autoFire){
+            if (this._autoFire) {
                 this._lastCaller = context;
                 this._lastArguments = args;
             }
         }
     };
 
-    Callbacks.prototype.remove = function (fn) {
+    Callbacks.prototype.remove = function(fn) {
         var index = mm.inArray(this._listOfCallbacks, fn);
         if (mm.isFunction(fn) && index >= 0) {
             this._listOfCallbacks.splice(index, 1);
@@ -67,30 +67,28 @@
         return false;
     };
 
-    Callbacks.prototype._fireToEventHandler = function (context, callback, args) {
+    Callbacks.prototype._fireToEventHandler = function(context, callback, args) {
         try {
             args = (args) ? args : []; //ie8 bug
             callback.apply(context, args);
-        } 
-        catch (err) {
+        } catch (err) {
             if (!this._bubbleErrors && console && console.error) {
-                if(err.stack){
+                if (err.stack) {
                     console.error(err.stack);
+                } else {
+                    console.error('a function attached to Callbacks thorwed an error: ' + err);
                 }
-                else{
-                	console.error('a function attached to Callbacks thorwed an error: '+ err);
-                }
-            } else if(this._bubbleErrors) {
+            } else if (this._bubbleErrors) {
                 throw err;
             }
         }
     };
     //end Callbacks
 
-	//similar to $.callbacks
+    //similar to $.callbacks
     //methods that supports: add, fire, remove and empty
     //mm.callbacks(false); does not buuble ups errors
-    mm.callbacks = function (bubbleUpErrors) {
+    mm.callbacks = function(bubbleUpErrors) {
         var callbacks = new Callbacks();
         callbacks.enableBubbleUpErrors(bubbleUpErrors);
         return callbacks;

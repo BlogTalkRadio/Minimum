@@ -1,15 +1,18 @@
 /*jslint bitwise: true*/
 'use strict';
-(function(mm){
-	/**
-    * Fast UUID generator, RFC4122 version 4 compliant.
-    * @author Jeff Ward (jcward.com).
-    * @license MIT license
-    * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
-    **/
-    var UUID = (function () {
+(function(mm) {
+    /**
+     * Fast UUID generator, RFC4122 version 4 compliant.
+     * @author Jeff Ward (jcward.com).
+     * @license MIT license
+     * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
+     **/
+    var UUID = (function() {
         var self = {};
-        var lut = []; for (var i = 0; i < 256; i++) { lut[i] = (i < 16 ? '0' : '') + (i).toString(16); }
+        var lut = [];
+        for (var i = 0; i < 256; i++) {
+            lut[i] = (i < 16 ? '0' : '') + (i).toString(16);
+        }
         self.generate = function() {
             var d0 = Math.random() * 0xffffffff | 0;
             var d1 = Math.random() * 0xffffffff | 0;
@@ -27,5 +30,5 @@
     mm.guid = function() {
         return UUID.generate();
     };
-    
+
 })(window.mm);

@@ -4,7 +4,7 @@
 // mm supports IE8+
 /*global ActiveXObject*/
 'use strict';
-(function () {
+(function() {
 
     var mm = new Minimum(); //a Minimum to use as self;
     window.mm = mm;
@@ -20,11 +20,11 @@
         var objToString = objectProto.toString,
             funcTag = '[object Function]';
 
-        this.noop = function () {};
+        this.noop = function() {};
 
         // serializes an object as a query string to be sent via a form
         // we're using the same name as jquery uses
-        this.serialize = function (instance, prefix) {
+        this.serialize = function(instance, prefix) {
             var serialized = [];
 
             prefix = prefix ? prefix + '.' : '';
@@ -35,19 +35,15 @@
 
                     if (!value) {
                         serialized.push(prefix + key + '=');
-                    }
-                    else if (typeof value === 'number' || typeof value === 'string') {
+                    } else if (typeof value === 'number' || typeof value === 'string') {
                         serialized.push(prefix + key + '=' + value);
-                    }
-                    else if (this.isArray(value)) {
+                    } else if (this.isArray(value)) {
                         for (var index = 0; index < value.length; index++) {
                             serialized.push(prefix + key + '[]=' + value[index]);
                         }
-                    }
-                    else if (this.isFunction(value)) {
+                    } else if (this.isFunction(value)) {
                         continue;
-                    }
-                    else {
+                    } else {
                         serialized.push(this.serialize(value, key));
                     }
                 }
@@ -56,7 +52,7 @@
             return serialized.join('&');
         };
 
-        this.ajax = function (method, url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
+        this.ajax = function(method, url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
             var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
             request.open(method, url, true);
             if (isJSON) {
@@ -66,7 +62,7 @@
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             }
 
-            request.onreadystatechange = function () {
+            request.onreadystatechange = function() {
                 if (this.readyState === 4) {
 
                     var responseContentType = this.getResponseHeader('content-type');
@@ -103,39 +99,39 @@
             request.send(data);
         };
 
-        this.get = function (url, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
+        this.get = function(url, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
             this.ajax('GET', url, null, onSuccessFn, onErrorFn, alwaysFn, isJSON);
         };
 
-        this.getJSON = function (url, onSuccessFn, onErrorFn, alwaysFn) {
+        this.getJSON = function(url, onSuccessFn, onErrorFn, alwaysFn) {
             this.ajax('GET', url, null, onSuccessFn, onErrorFn, alwaysFn, true);
         };
 
-        this.post = function (url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
+        this.post = function(url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
             this.ajax('POST', url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON);
         };
 
-        this.postJSON = function (url, data, onSuccessFn, onErrorFn, alwaysFn) {
+        this.postJSON = function(url, data, onSuccessFn, onErrorFn, alwaysFn) {
             this.ajax('POST', url, data, onSuccessFn, onErrorFn, alwaysFn, true);
         };
 
-        this.put = function (url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
+        this.put = function(url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
             this.ajax('PUT', url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON);
         };
 
-        this.putJSON = function (url, data, onSuccessFn, onErrorFn, alwaysFn) {
+        this.putJSON = function(url, data, onSuccessFn, onErrorFn, alwaysFn) {
             this.ajax('PUT', url, data, onSuccessFn, onErrorFn, alwaysFn, true);
         };
 
-        this.$delete = function (url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
+        this.$delete = function(url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
             this.ajax('DELETE', url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON);
         };
 
-        this.deleteJSON = function (url, data, onSuccessFn, onErrorFn, alwaysFn) {
+        this.deleteJSON = function(url, data, onSuccessFn, onErrorFn, alwaysFn) {
             this.ajax('DELETE', url, data, onSuccessFn, onErrorFn, alwaysFn, true);
         };
 
-        this.loadArray = function (url, onLoadFn) {
+        this.loadArray = function(url, onLoadFn) {
             if (!this.isFunction(onLoadFn)) {
                 throw 'onLoadFn parameter must be a function';
             }
@@ -144,14 +140,14 @@
             request.open('GET', url, true);
             request.responseType = 'arraybuffer';
 
-            request.onload = function () {
+            request.onload = function() {
                 onLoadFn(request.response);
             };
 
             request.send();
         };
 
-        this.getScript = function (url, callback) {
+        this.getScript = function(url, callback) {
             // adding the script tag to the head as suggested before
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
@@ -166,7 +162,7 @@
             if (script.addEventListener) {
                 script.addEventListener('load', callback, false); // IE9+, Chrome, Firefox
             } else if (script.readyState) { // IE8
-                script.onreadystatechange = function () {
+                script.onreadystatechange = function() {
                     if (script.readyState === 'loaded' || script.readyState === 'complete') {
                         callback();
                     }
@@ -177,7 +173,7 @@
             head.appendChild(script);
         };
 
-        this.extend = function (out) {
+        this.extend = function(out) {
             out = out || {};
             for (var i = 1; i < arguments.length; i++) {
                 if (!arguments[i]) {
@@ -193,7 +189,7 @@
             return out;
         };
 
-        this.inArray = function (array, item) {
+        this.inArray = function(array, item) {
             for (var i = 0; i < array.length; i++) {
                 if (array[i] === item) {
                     return i;
@@ -202,31 +198,30 @@
             return -1;
         };
 
-        this.forEach = function (array, fn, scope) {
+        this.forEach = function(array, fn, scope) {
             for (var i = 0; i < array.length; i++) {
                 fn.call(scope, array[i], i);
             }
         };
 
         ///If url is empty gets the url form window.location
-        this.getQueryStringValues = function (url, getHashValues) {
+        this.getQueryStringValues = function(url, getHashValues) {
             if (!url) {
                 url = (getHashValues) ? window.location.hash : window.location.search;
             }
             var j = {},
                 q = ((getHashValues) ? url.replace(/\#/, '').replace(/\?/, '') : url.replace(/\?/, '')).split('&');
-            this.forEach(q, function (i) {
+            this.forEach(q, function(i) {
                 var arr = i.split('=');
                 j[arr[0]] = arr[1];
             });
             return j;
         };
 
-        this.pushArray = function (array1, array2) {
-            if(array1.concat){
+        this.pushArray = function(array1, array2) {
+            if (array1.concat) {
                 array1.concat(array2);
-            }
-            else{
+            } else {
                 array1.push.apply(array1, array2);
             }
         };
@@ -235,11 +230,11 @@
             return Object.prototype.toString.call(obj) === '[object Array]';
         };
 
-        this.getHashValues = function (url) {
+        this.getHashValues = function(url) {
             return this.getQueryStringValues(url, true);
         };
 
-        this.map = function (arr, fn) {
+        this.map = function(arr, fn) {
             var results = [];
             for (var i = 0; i < arr.length; i++) {
                 results.push(fn(arr[i], i));
@@ -263,7 +258,7 @@
          * _.isFunction(/abc/);
          * // => false
          */
-        this.isFunction = function (value) {
+        this.isFunction = function(value) {
             // The use of `Object#toString` avoids issues with the `typeof` operator
             // in Safari 8 which returns 'object' for typed array constructors, and
             // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
@@ -290,14 +285,14 @@
          * _.isObject(1);
          * // => false
          */
-        this.isObject = function (value) {
+        this.isObject = function(value) {
             // Avoid a V8 JIT bug in Chrome 19-20.
             // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
             var type = typeof value;
             return !!value && (type === 'object' || type === 'function');
         };
 
-        this.isString = function(value){
+        this.isString = function(value) {
             return typeof value === 'string';
         };
 
