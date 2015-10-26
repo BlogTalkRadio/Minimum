@@ -31,6 +31,13 @@ gulp.task('test', function (done) {
   }, done).start();
 });
 
+gulp.task('test:dist', function (done) {
+  new Server({
+    configFile: __dirname + '/karma-dist.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
 /**
  * Watch for file changes and re-run tests on each change
  */
@@ -73,4 +80,4 @@ gulp.task('watchtdd', function(){
 
 gulp.task('default', ['lint', 'test']);
 gulp.task('build:Debug', ['default']);
-gulp.task('build:Release', ['default', 'uglyfly']);
+gulp.task('build:Release', ['lint', 'uglyfly','test:dist']);
