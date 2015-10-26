@@ -1,6 +1,5 @@
 {
   "name": "Minimum",
-  "version": "0.0.3",
   "homepage": "https://github.com/BlogTalkRadio/Minimum",
   "authors": [
     "BlogTalkRadio"
@@ -25,5 +24,8 @@
     "bower_components",
     "test",
     "tests"
+  ],
+  "main": [
+    "dist/minimum.js"
   ]
 }
