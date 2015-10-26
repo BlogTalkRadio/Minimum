@@ -33,7 +33,7 @@ gulp.task('test', function(done) {
     }, done).start();
 });
 
-gulp.task('test:dist', function(done) {
+gulp.task('test:dist', ['uglyfly'], function(done) {
     new Server({
         configFile: __dirname + '/karma-dist.conf.js',
         singleRun: true
@@ -88,4 +88,4 @@ gulp.task('watchtdd', function() {
 
 gulp.task('default', ['lint', 'test']);
 gulp.task('build:Debug', ['default']);
-gulp.task('build:Release', ['lint', 'uglyfly', 'test:dist']);
+gulp.task('build:Release', ['lint', 'test:dist']);
