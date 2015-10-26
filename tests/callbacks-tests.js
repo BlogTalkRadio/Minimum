@@ -78,7 +78,7 @@ describe('Callbacks: ', function() {
         expect(listener.onSomething.calls.first().returnValue).toBeUndefined();
     });
 
-    it('a Callback should add functions and remove them', function() {
+    it('should add functions and remove them', function() {
         spyOn(listener, 'onSomething').and.callThrough();
 
         callback1.add(listener.onSomething);
@@ -105,7 +105,7 @@ describe('Callbacks: ', function() {
         expect(listener.onSomething).not.toHaveBeenCalled();
     });
 
-    it('a listener attached method to Callbacks, should bubble up errors when setuped', function() {
+    it('a listener attached method to Callbacks, should not bubble up errors when is setup', function() {
         callback1 = mm.callbacks(false); //new callbacks configured not to bubbule up Errors
 
         spyOn(listener, 'onSomething').and.callThrough();
