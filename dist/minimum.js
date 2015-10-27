@@ -52,6 +52,18 @@
             return serialized.join('&');
         };
 
+        this.proxy = function(fn, context) {
+            var args, slice = Array.prototype.slice;
+            if (!mm.isFunction(fn)) {
+                return undefined;
+            }
+
+            args = slice.call(arguments, 2);
+            return function() {
+                return fn.apply(context || this, args.concat(slice.call(arguments)));
+            };
+        };
+
         this.ajax = function(method, url, data, onSuccessFn, onErrorFn, alwaysFn, isJSON) {
             var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
             request.open(method, url, true);
