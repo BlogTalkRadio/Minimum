@@ -53,10 +53,10 @@ gulp.task('concat:dist', function() {
     return gulp.src(sourceFiles)
         .pipe(concat(appNameJs, {
             process: function(src) {
-                return (src.trim() + '\n').replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1');
+                return (src.trim() + '\r\n').replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1');
             }
         }))
-        .pipe(concat.header('\'use strict\';\n'))
+        .pipe(concat.header('\'use strict\';\r\n'))
         .pipe(gulp.dest(distFolder));
 });
 

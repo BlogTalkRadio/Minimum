@@ -2,38 +2,44 @@
 describe('Callbacks: ', function() {
     //setup objects to test
     var mm = window.mm,
-        callback1,
+        callbackEvent,
         listener = {
             name: 'Listener Addams',
-            onSomething: function() {
+            getName: function() {
                 return this.name;
             },
-            onSomeError: function() {
+            getError: function() {
                 return this.uwuwi.duwqyuwq; //to throws an error
             }
         },
         caller = {
             name: 'Caller McFly',
+            onEvent: null,
             fireFromThis: function(arg) {
-                callback1.fire(this, arg);
+                callbackEvent.fire(this, arg);
             },
             fireAnon: function() {
-                callback1.fire();
+                callbackEvent.fire();
             },
             fireWithOneParam: function(arg) {
-                callback1.fire(null, arg);
+                callbackEvent.fire(null, arg);
             },
+            fireOnEvent : function(){
+                if(this.onEvent){
+                    this.onEvent();
+                }
+            }
         };
 
     beforeEach(function() {
-        callback1 = mm.callbacks();
+        callbackEvent = mm.callbacks();
     });
 
     afterEach(function() {
-        callback1 = null;
+        callbackEvent = null;
         //clean spies
-        if (listener.onSomething.calls) {
-            listener.onSomething.calls.reset();
+        if (listener.getName.calls) {
+            listener.getName.calls.reset();
         }
         if (console.calls) {
             console.calls.reset();
@@ -45,81 +51,91 @@ describe('Callbacks: ', function() {
     });
 
     it('should create a Callback and fire', function() {
-        spyOn(listener, 'onSomething').and.callThrough();
+        spyOn(listener, 'getName').and.callThrough();
 
-        callback1.add(listener.onSomething);
+        callbackEvent.add(listener.getName);
         caller.fireAnon();
 
-        expect(listener.onSomething).toHaveBeenCalled();
-        expect(listener.onSomething.calls.first().returnValue).toBeUndefined();
+        expect(listener.getName).toHaveBeenCalled();
+        expect(listener.getName.calls.first().returnValue).toBeUndefined();
     });
 
     it('should create a Callback and fire binding to this', function() {
         var fireArgument = 'hola';
 
-        spyOn(listener, 'onSomething').and.callThrough();
+        spyOn(listener, 'getName').and.callThrough();
 
-        callback1.add(listener.onSomething);
+        callbackEvent.add(listener.getName);
         caller.fireFromThis(fireArgument);
 
-        expect(listener.onSomething).toHaveBeenCalledWith(fireArgument);
-        expect(listener.onSomething.calls.first().returnValue).toEqual(caller.name);
+        expect(listener.getName).toHaveBeenCalledWith(fireArgument);
+        expect(listener.getName.calls.first().returnValue).toEqual(caller.name);
     });
 
     it('should create a callback and fire with one or more parameters', function() {
         var fireArgument = 'hola';
 
-        spyOn(listener, 'onSomething').and.callThrough();
+        spyOn(listener, 'getName').and.callThrough();
 
-        callback1.add(listener.onSomething);
+        callbackEvent.add(listener.getName);
         caller.fireWithOneParam(fireArgument);
 
-        expect(listener.onSomething).toHaveBeenCalledWith(null, fireArgument);
-        expect(listener.onSomething.calls.first().returnValue).toBeUndefined();
+        expect(listener.getName).toHaveBeenCalledWith(null, fireArgument);
+        expect(listener.getName.calls.first().returnValue).toBeUndefined();
     });
 
     it('should add functions and remove them', function() {
-        spyOn(listener, 'onSomething').and.callThrough();
+        spyOn(listener, 'getName').and.callThrough();
 
-        callback1.add(listener.onSomething);
-        callback1.empty(); //test empty
+        callbackEvent.add(listener.getName);
+        callbackEvent.empty(); //test empty
         caller.fireAnon();
-        expect(listener.onSomething).not.toHaveBeenCalled();
-        listener.onSomething.calls.reset();
+        expect(listener.getName).not.toHaveBeenCalled();
+        listener.getName.calls.reset();
 
-        callback1.add(listener.onSomething);
-        callback1.remove(listener.onSomething); //test remove
+        callbackEvent.add(listener.getName);
+        callbackEvent.remove(listener.getName); //test remove
         caller.fireAnon();
-        expect(listener.onSomething).not.toHaveBeenCalled();
+        expect(listener.getName).not.toHaveBeenCalled();
     });
 
     it('a listener attached method to Callbacks, should bubble up errors by default', function() {
-        spyOn(listener, 'onSomething').and.callThrough();
-        spyOn(listener, 'onSomeError').and.callThrough();
+        spyOn(listener, 'getName').and.callThrough();
+        spyOn(listener, 'getError').and.callThrough();
 
-        callback1.add(listener.onSomeError);
-        callback1.add(listener.onSomething);
+        callbackEvent.add(listener.getError);
+        callbackEvent.add(listener.getName);
 
         expect(caller.fireAnon).toThrowError();
-        expect(listener.onSomeError).toHaveBeenCalled();
-        expect(listener.onSomething).not.toHaveBeenCalled();
+        expect(listener.getError).toHaveBeenCalled();
+        expect(listener.getName).not.toHaveBeenCalled();
     });
 
     it('a listener attached method to Callbacks, should not bubble up errors when is setup', function() {
-        callback1 = mm.callbacks(false); //new callbacks configured not to bubbule up Errors
+        callbackEvent = mm.callbacks(false); //new callbacks configured not to bubbule up Errors
 
-        spyOn(listener, 'onSomething').and.callThrough();
-        spyOn(listener, 'onSomeError').and.callThrough();
+        spyOn(listener, 'getName').and.callThrough();
+        spyOn(listener, 'getError').and.callThrough();
         spyOn(console, 'error');
 
-        callback1.add(listener.onSomeError);
-        callback1.add(listener.onSomething);
+        callbackEvent.add(listener.getError);
+        callbackEvent.add(listener.getName);
 
         caller.fireAnon();
         expect(console.error).toHaveBeenCalled();
-        expect(listener.onSomething).toHaveBeenCalled();
-        expect(listener.onSomeError).toHaveBeenCalled();
+        expect(listener.getName).toHaveBeenCalled();
+        expect(listener.getError).toHaveBeenCalled();
     });
 
+    it('should keep "this" ', function() {
+        var executed = false;
+        caller.onEvent = callbackEvent.fire;
 
+        callbackEvent.add(function(){
+            executed = true;
+        });
+
+        caller.fireOnEvent();
+        expect(executed).toBe(true);
+    });
 });
