@@ -5,7 +5,7 @@
         //autoFire is when this event is executed only one time. 
         //And perhaps some handlers where attached after the event was release
         var autoFire = false,
-            isPaused = false,
+            isSuspended = false,
             listOfCallbacks = [],
             bubbleErrors = true, //by default callbacks bubble's up errors
             lastCaller = null,
@@ -17,7 +17,7 @@
         };
 
         this.enableBubbleUpErrors = function(bool) {
-            bubbleErrors = (bool === false) ? false : true; //by default true. Callbacks bubbles up errors
+            bubbleErrors = (bool === false) ? false : true; //by default true, Callbacks bubbles up errors
         };
 
         this.setAutoFireOnNewAdds = function(bool) {
@@ -25,13 +25,13 @@
         };
 
         //stops sending events if it is paused
-        this.pause = function(){
-            isPaused = true;
+        this.suspend = function(){
+            isSuspended = true;
         };
 
         //start sending events again if it was paused
-        this.play = function(){
-            isPaused = false;
+        this.resume = function(){
+            isSuspended = false;
         };
 
         //add function/s to listen the event
@@ -78,7 +78,7 @@
 
         function fireToEventHandler(context, callback, args) {
             try {
-                if(!isPaused){
+                if(!isSuspended){
                     args = (args) ? args : []; //ie8 bug
                     callback.apply(context, args);
                 }
@@ -98,7 +98,7 @@
 
     //similar to $.callbacks
     //methods that supports: add, fire, remove and empty
-    //mm.callbacks(false); does not buuble ups errors
+    //mm.callbacks(false): does not bubble up errors
     mm.callbacks = function(bubbleUpErrors) {
         var callbacks = new Callbacks();
         callbacks.enableBubbleUpErrors(bubbleUpErrors);

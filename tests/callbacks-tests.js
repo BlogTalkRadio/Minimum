@@ -131,11 +131,11 @@ describe('Callbacks: ', function() {
         spyOn(listener, 'getName').and.callThrough();
 
         callbackEvent.add(listener.getName);
-        callbackEvent.pause();
+        callbackEvent.suspend();
         caller.fireAnon();
         expect(listener.getName).not.toHaveBeenCalled();
 
-        callbackEvent.play();
+        callbackEvent.resume();
         caller.fireAnon();
         expect(listener.getName).toHaveBeenCalled();
     });
