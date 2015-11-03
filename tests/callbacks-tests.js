@@ -127,6 +127,19 @@ describe('Callbacks: ', function() {
         expect(listener.getError).toHaveBeenCalled();
     });
 
+    it('should be posible to pause event fires', function(){
+        spyOn(listener, 'getName').and.callThrough();
+
+        callbackEvent.add(listener.getName);
+        callbackEvent.pause();
+        caller.fireAnon();
+        expect(listener.getName).not.toHaveBeenCalled();
+
+        callbackEvent.play();
+        caller.fireAnon();
+        expect(listener.getName).toHaveBeenCalled();
+    });
+
     it('should keep "this" ', function() {
         var executed = false;
         caller.onEvent = callbackEvent.fire;

@@ -5,6 +5,7 @@
         //autoFire is when this event is executed only one time. 
         //And perhaps some handlers where attached after the event was release
         var autoFire = false,
+            isPaused = false,
             listOfCallbacks = [],
             bubbleErrors = true, //by default callbacks bubble's up errors
             lastCaller = null,
@@ -21,6 +22,16 @@
 
         this.setAutoFireOnNewAdds = function(bool) {
             autoFire = bool;
+        };
+
+        //stops sending events if it is paused
+        this.pause = function(){
+            isPaused = true;
+        };
+
+        //start sending events again if it was paused
+        this.play = function(){
+            isPaused = false;
         };
 
         //add function/s to listen the event
@@ -67,8 +78,10 @@
 
         function fireToEventHandler(context, callback, args) {
             try {
-                args = (args) ? args : []; //ie8 bug
-                callback.apply(context, args);
+                if(!isPaused){
+                    args = (args) ? args : []; //ie8 bug
+                    callback.apply(context, args);
+                }
             } catch (err) {
                 if (!bubbleErrors && console && console.error) {
                     if (err.stack) {
