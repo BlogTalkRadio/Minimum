@@ -11,16 +11,25 @@
 
     function Minimum() {
 
+        var self = this;
         /** Used for native method references. */
         var objectProto = Object.prototype;
-
-        /* Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+         /* Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
          * of values.
          */
         var objToString = objectProto.toString,
             funcTag = '[object Function]';
-
         this.noop = function() {};
+        
+        var consoleWrapper = window.console  || function consoleWrapper() {
+                                                    this.log = self.noop;
+                                                    this.warn = self.noop;
+                                                    this.error = self.noop;
+                                                    this.info = self.noop;
+                                                    this.debug = self.noop;
+                                                };
+        //to prevent console errors in ie8
+        this.console = consoleWrapper;
 
         // serializes an object as a query string to be sent via a form
         // we're using the same name as jquery uses
