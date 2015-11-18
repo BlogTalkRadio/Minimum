@@ -240,10 +240,10 @@
         };
 
         this.pushArray = function(array1, array2) {
-            if (array1.concat) {
-                array1.concat(array2);
+            if (Boolean(array1.concat)) {
+                return array1.concat(array2);
             } else {
-                array1.push.apply(array1, array2);
+                return array1.push.apply(array1, array2);
             }
         };
 
