@@ -21,12 +21,12 @@
             funcTag = '[object Function]';
         this.noop = function() {};
         
-        var consoleWrapper = window.console  || function consoleWrapper() {
-                                                    this.log = self.noop;
-                                                    this.warn = self.noop;
-                                                    this.error = self.noop;
-                                                    this.info = self.noop;
-                                                    this.debug = self.noop;
+        var consoleWrapper = window.console  || {
+                                                    log: self.noop,
+                                                    warn: self.noop,
+                                                    error: self.noop,
+                                                    info: self.noop,
+                                                    debug: self.noop
                                                 };
         //to prevent console errors in ie8
         this.console = consoleWrapper;
