@@ -19,15 +19,16 @@
         var objToString = objectProto.toString,
             funcTag = '[object Function]';
         this.noop = function() {};
+        var consoleWrapper = {
+            log: this.noop,
+            warn: this.noop,
+            error: this.noop,
+            info: this.noop,
+            debug: this.noop
+        };
         
-        //to prevent console errors in ie8
-        this.console = window.console || {
-                                            log: this.noop,
-                                            warn: this.noop,
-                                            error: this.noop,
-                                            info: this.noop,
-                                            debug: this.noop
-                                        };
+        //to prevent console errors in ie8 and ie9
+        this.console = window.console || consoleWrapper;
 
         // serializes an object as a query string to be sent via a form
         // we're using the same name as jquery uses
@@ -235,14 +236,6 @@
                 j[arr[0]] = arr[1];
             });
             return j;
-        };
-
-        this.pushArray = function(array1, array2) {
-            if (Boolean(array1.concat)) {
-                return array1.concat(array2);
-            } else {
-                return array1.push.apply(array1, array2);
-            }
         };
 
         this.isArray = function isArray(obj) {
