@@ -11,7 +11,6 @@
 
     function Minimum() {
 
-        var self = this;
         /** Used for native method references. */
         var objectProto = Object.prototype;
          /* Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
@@ -20,16 +19,16 @@
         var objToString = objectProto.toString,
             funcTag = '[object Function]';
         this.noop = function() {};
+        var consoleWrapper = {
+            log: this.noop,
+            warn: this.noop,
+            error: this.noop,
+            info: this.noop,
+            debug: this.noop
+        };
         
-        var consoleWrapper = window.console  || function consoleWrapper() {
-                                                    this.log = self.noop;
-                                                    this.warn = self.noop;
-                                                    this.error = self.noop;
-                                                    this.info = self.noop;
-                                                    this.debug = self.noop;
-                                                };
-        //to prevent console errors in ie8
-        this.console = consoleWrapper;
+        //to prevent console errors in ie8 and ie9
+        this.console = window.console || consoleWrapper;
 
         // serializes an object as a query string to be sent via a form
         // we're using the same name as jquery uses
@@ -237,14 +236,6 @@
                 j[arr[0]] = arr[1];
             });
             return j;
-        };
-
-        this.pushArray = function(array1, array2) {
-            if (Boolean(array1.concat)) {
-                return array1.concat(array2);
-            } else {
-                return array1.push.apply(array1, array2);
-            }
         };
 
         this.isArray = function isArray(obj) {
