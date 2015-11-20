@@ -22,12 +22,12 @@
         
         //to prevent console errors in ie8
         this.console = window.console || {
-											log: this.noop,
-											warn: this.noop,
-											error: this.noop,
-											info: this.noop,
-											debug: this.noop
-										};
+                                            log: this.noop,
+                                            warn: this.noop,
+                                            error: this.noop,
+                                            info: this.noop,
+                                            debug: this.noop
+                                        };
 
         // serializes an object as a query string to be sent via a form
         // we're using the same name as jquery uses
