@@ -7,7 +7,7 @@ Why and when to use Minimum?
 
 - Because we did not want to "copy and paste" code each time we wanted to use code from: [YOU MIGHT NOT NEED JQUERY](http://youmightnotneedjquery.com/).  Also we have copied some little code from [_lodash](http://lodash.com). 
 - We needed a small footprint.  **8k minified - 3k gziped**
-- We need that works on IE8 and newers versions
+- We needed that works on IE8 and newers versions
 - We needed a small DI framework module pattern for our Javascript vanilla projects
 - We needed a similar functionality to [jQuery.Callbacks()](https://api.jquery.com/jQuery.Callbacks/) to easily and explicitly manage events. 
 
@@ -33,7 +33,7 @@ function getData(url, callback){
 ```
 >Check the main `mm` functions such as `ajax`, `foreach`, `inArray`, `getScript`, `extend`, `getQueryStringValues`,  etc: https://github.com/BlogTalkRadio/Minimum/blob/master/src/minimum.js
 
-**DOM Examples **:
+**DOM Examples**:
 ```
 var timeLineElem = mm.byId('timeline');
 mm.addClass(timeLineElem , 'superClass');
