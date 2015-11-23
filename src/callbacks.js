@@ -85,9 +85,9 @@
             } catch (err) {
                 if (!bubbleErrors && console && console.error) {
                     if (err.stack) {
-                        console.error(err.stack);
+                        mm.console.error(err.stack);
                     } else {
-                        console.error('a function attached to Callbacks thorwed an error: ' + err);
+                        mm.console.error('a function attached to Callbacks thorwed an error: ' + err);
                     }
                 } else if (bubbleErrors) {
                     throw err;

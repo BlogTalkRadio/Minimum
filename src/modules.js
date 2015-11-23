@@ -4,7 +4,7 @@
     var diContainer = null;
     ///Injector
     function Injector() {
-        var app, self = this,
+        var app, self = this, isAppResolved = false,
             modules = {};
 
         this.resolve = function(deps, func, scope) {
@@ -64,13 +64,19 @@
             };
         };
 
-        mm.onReady(function() {
-            if (app) {
-                var mmApp = self.resolve(app.deps, app.func, app.scope);
-                mmApp();
+        this.resolveApp = function(){
+            if (app && !isAppResolved) {
+                var myApp = self.resolve(app.deps, app.func, app.scope);
+                myApp();
+                isAppResolved = true;
+                return true;
             }
-        });
+            return false;
+        };
 
+        mm.onReady(function() {
+            self.resolveApp();
+        });
     } //end injector
 
     //mm.resolve:  resolves the dependencies in the moment
@@ -80,6 +86,11 @@
         deps = (mm.isString(deps)) ? [deps] : deps;
         var resolved = diContainer.resolve(deps, func, scope);
         resolved.apply(scope || {});
+    };
+
+    mm.resolveApp = function(){
+        diContainer = diContainer || new Injector();
+        return diContainer.resolveApp();
     };
 
     mm.app = function(deps, func, scope) {
