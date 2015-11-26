@@ -7,7 +7,7 @@ Why and when to use Minimum?
 
 - Because we did not want to "copy and paste" code each time we wanted to use code from: [YOU MIGHT NOT NEED JQUERY](http://youmightnotneedjquery.com/).  Also we have copied some little code from [_lodash](http://lodash.com). 
 - We needed a small footprint.  **8k minified - 3k gziped**
-- We needed that works on IE8 and newer versions
+- We needed it to work on IE8 and newer versions
 - We needed a small DI framework module pattern for our Javascript vanilla projects
 - We needed a similar functionality to [jQuery.Callbacks()](https://api.jquery.com/jQuery.Callbacks/) to easily and explicitly manage events. 
 
@@ -52,7 +52,7 @@ mm.onReady(function(){
 Dependency Injection, modules and application
 --------------------------------------------------------
 
-Minimum modules are really similar to Angular ones. 
+Minimum modules are really similar to AngularJS ones. 
 
 ```
 mm.module('firstModule', function(){
@@ -74,12 +74,12 @@ mm.app(['complexModule'], function('complexModule'){
 
 **`mm.module(moduleName, [dependencyArray], func)`**
 - moduleName | string: name of the module
-- dependencyArray | array of strings | optional : is the array of dependencies that required the module to execute
-- func | function: the function to be executed, only once. This function will get the dependencies by parameters, in the same order as the dependecyArray. 
+- dependencyArray | array of strings | optional : is the array of dependencies that are required by the module to execute
+- func | function: the function to be executed, only once. This function will get the dependencies by parameters, in the same order as the dependencyArray. 
 
 **`mm.app([dependencyArray], func)`**
 app will be only executed once when the Dom is loaded. It only supports one "app" module.
-- dependencyArray | array of strings | optional : is the array of dependencies that required the module to execute
+- dependencyArray | array of strings | optional : is the array of dependencies that are required by the module to execute
 - func | function: the function to be executed, only once. This function will get the dependencies by parameters, in the same order as the dependencyArray. 
 
 Callbacks
@@ -109,9 +109,9 @@ businessObject.doSomething();
 ```
 
 `mm.callbacks` has some other features like: 
-- `suspend` and `resume` the execution of the events callbacks, it was a good solution for binding and unbind UI controls.  
-- `setAutoFireOnNewAdds`: is used to autofire events for new listeners that where attached after the business fire.
-- `mm.callbacks(false)`: is to make that any error that could be thrown by a listener function, is not bubble up. So the execution of your app is not stop. **note:** the trapped errors will be shown always in the console. 
+- `suspend` and `resume` the execution of the events callbacks, it is a good solution for binding and unbinding UI controls.  
+- `setAutoFireOnNewAdds`: is used to autofire events for new listeners that were attached after the callback was fired.
+- `mm.callbacks(false)`: enforces that any error that could be thrown by a listener function, is not bubbled up. So the execution of your app is not stopped. **note:** the trapped errors will always be shown on the console. 
 
 Check callbacks code and tests: 
 https://github.com/BlogTalkRadio/Minimum/blob/master/src/callbacks.js
