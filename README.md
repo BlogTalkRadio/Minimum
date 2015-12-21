@@ -24,7 +24,7 @@ Minimum is really easy to use. The Minimum  shortcut is just `mm`
 **Some examples**:
 
 **Http request example**: 
-```
+```javascript
 function getData(url, callback){
 	if (!mm.isFunction(callback)) {
 	    throw 'callback should be a function';
@@ -40,7 +40,7 @@ function getData(url, callback){
 >Check the main `mm` functions such as `ajax`, `foreach`, `inArray`, `getScript`, `extend`, `getQueryStringValues`,  etc: https://github.com/BlogTalkRadio/Minimum/blob/master/src/minimum.js
 
 **DOM Examples**:
-```
+```javascript
 var timeLineElem = mm.byId('timeline');
 mm.addClass(timeLineElem , 'superClass');
 mm.removeClass(timeLineElem , 'uglyClass');
@@ -60,7 +60,7 @@ Dependency Injection, modules and application
 
 Minimum modules are really similar to AngularJS ones. 
 
-```
+```javascript
 mm.module('firstModule', function(){
 	return { description: 'mm is cool'};
 });
@@ -93,7 +93,7 @@ Callbacks
 Minimum Callbacks are almost equal to [jQuery.Callbacks()](https://api.jquery.com/jQuery.Callbacks/) . So basically is a object to manage callbacks lists. The idea is to mange the list of callbacks in an explicit way:  
 
 **Example**
-```
+```javascript
 var businessObject = {};
 businessObject._businessEvent = mm.callbacks();
 businessObject.doSomething = function(){
