@@ -2,6 +2,12 @@ Minimum  [![Build Status](https://semaphoreci.com/api/v1/projects/ef844dbb-bb42-
 ========
 >All in one replacement for jQuery with DI and modules, very lightweight yet very powerful
 
+Installation
+------------
+```sh
+$  bower install Minimum
+```
+
 Why and when to use Minimum? 
 --------------------------------------
 
