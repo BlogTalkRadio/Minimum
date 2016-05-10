@@ -90,7 +90,7 @@ app will be only executed once when the Dom is loaded. It only supports one "app
 
 Callbacks
 -----------
-Minimum Callbacks are almost equal to [jQuery.Callbacks()](https://api.jquery.com/jQuery.Callbacks/) . So basically is a object to manage callbacks lists. The idea is to mange the list of callbacks in an explicit way:  
+Minimum Callbacks is almost equals to [jQuery.Callbacks()](https://api.jquery.com/jQuery.Callbacks/) . So basically is a object to manage callbacks lists. The idea is to mange the list of callbacks in an explicit way:  
 
 **Example**
 ```javascript
