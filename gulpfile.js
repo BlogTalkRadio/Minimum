@@ -56,7 +56,6 @@ gulp.task('concat:dist', function() {
                 return (src.trim() + '\r\n').replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1');
             }
         }))
-        .pipe(concat.header('\'use strict\';\r\n'))
         .pipe(gulp.dest(distFolder));
 });
 
