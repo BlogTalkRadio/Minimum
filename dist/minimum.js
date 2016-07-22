@@ -1,4 +1,3 @@
-'use strict';
 // mm is a mini jQuery replacement based on code from http://youmightnotneedjquery.com/
 // mm also uses code from lodash and jQuery
 // mm is a short-cut of the word Minimum
